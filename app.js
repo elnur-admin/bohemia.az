@@ -6,7 +6,7 @@
   paletteStyle.textContent = `:root{--cream:#e7ded2;--sand:#d6c4b3}.brand{color:#18231b!important;letter-spacing:.11em!important;font-size:24px!important;position:relative}.brand:after{content:'✦';color:var(--terra);font:11px 'DM Sans';letter-spacing:0;margin-left:7px;vertical-align:middle}.brand span,.brand i{font:inherit!important;color:inherit!important;letter-spacing:inherit!important;margin:0!important}.cart-toggle{border:1px solid var(--line);background:transparent;color:var(--ink);padding:10px 13px;font:600 12px 'DM Sans';cursor:pointer}.cart-toggle span{display:inline-grid;place-items:center;min-width:19px;height:19px;border-radius:50%;background:var(--terra);color:white;font-size:10px;margin-left:5px}.cart-row{display:grid;grid-template-columns:52px 1fr auto;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}.cart-row img{width:52px;height:52px;object-fit:cover}.cart-row h3{font:600 16px 'Playfair Display';margin:0 0 5px}.cart-row p{margin:0;font-size:12px;color:#657064}.cart-actions{display:flex;align-items:center;gap:8px;margin-top:8px}.cart-actions button{border:1px solid var(--line);background:#fff;padding:3px 8px;cursor:pointer}.cart-total{display:flex;justify-content:space-between;font:600 18px 'Playfair Display';margin:18px 0}.cart-empty{padding:15px 0;color:#657064}.cart-pop{position:fixed;z-index:99;pointer-events:none;background:var(--terra);color:#fffaf4;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:bold;animation:cartPop .75s ease-out forwards}@keyframes cartPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}20%{opacity:1;transform:translate(-50%,-70%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-220%) scale(.7)}}`;
   document.head.append(paletteStyle);
   const layoutStyle = document.createElement("style");
-  layoutStyle.textContent = `.card-body{display:flex;flex-direction:column;min-height:178px}.card-body>p{height:38px!important;overflow:hidden;margin-bottom:8px!important}.card-bottom{margin-top:auto!important;min-height:38px}.card-bottom .price,.card-bottom .order-btn{white-space:nowrap}@media(max-width:800px){.card-body{min-height:126px}.card-body>p{display:none}}`;
+  layoutStyle.textContent = `.card-body{display:flex;flex-direction:column;min-height:178px}.card-body>p{height:38px!important;overflow:hidden;margin-bottom:8px!important}.card-bottom{margin-top:auto!important;min-height:38px}.card-bottom .price,.card-bottom .order-btn{white-space:nowrap}@media(max-width:800px){.card-body{min-height:158px}.card-body>p{display:none}.product-grid .card-bottom{flex-direction:column;align-items:stretch;gap:8px}.product-grid .price{align-self:flex-start}.product-grid .order-btn{width:100%;padding:10px 6px;white-space:normal;font-size:11px;line-height:1.25}}`;
   document.head.append(layoutStyle);
   const cfg = window.STORE_CONFIG || {};
   const phone = cfg.whatsappNumber || "994XXXXXXXXX";
@@ -99,7 +99,6 @@
   }
   fetch("data/products.json").then(r => { if (!r.ok) throw Error(); return r.json(); }).then(data => { products = data; render("all"); }).catch(() => { grid.innerHTML = "<p>Məhsullar yüklənmədi. Zəhmət olmasa səhifəni yeniləyin.</p>"; });
 })();
-
 
 
 
