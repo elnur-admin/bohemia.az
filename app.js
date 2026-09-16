@@ -29,7 +29,9 @@
   document.querySelector(".filters").addEventListener("click", e => { if (!e.target.matches("button")) return; document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active")); e.target.classList.add("active"); render(e.target.dataset.filter); });
   grid.addEventListener("click", e => { const id = e.target.dataset.add; if (!id) return; addToCart(products.find(p => p.id === id), e.target); });
   document.querySelector(".close").onclick = () => dialog.close();
-  document.querySelector("#cart-toggle").onclick = () => { renderCart(); cartDialog.showModal(); };
+  document.querySelectorAll("#cart-toggle, #cart-float").forEach(button => {
+    button.onclick = () => { renderCart(); cartDialog.showModal(); };
+  });
   document.querySelector("#cart-close").onclick = () => cartDialog.close();
   function addToCart(product, source) {
     const found = cart.find(item => item.id === product.id);
@@ -39,7 +41,9 @@
   }
   function saveCart() {
     localStorage.setItem("bohemia-cart", JSON.stringify(cart));
-    document.querySelector("#cart-count").textContent = cart.reduce((sum,item) => sum + item.qty, 0);
+    const count = cart.reduce((sum,item) => sum + item.qty, 0);
+    document.querySelectorAll("#cart-count, #cart-float-count").forEach(el => { el.textContent = count; });
+    document.querySelector("#cart-float").setAttribute("aria-label", `Səbəti aç, ${count} məhsul`);
   }
   function renderCart() {
     const root = document.querySelector("#cart-content");
@@ -80,12 +84,21 @@
     copy.textContent = `${space} üçün ən uyğun bohem detallarını birlikdə seçək — WhatsApp-da yazın.`;
     if (link) link.href = wa(`Salam! Bohemia-dan ${space} məkanım üçün dekor seçimi haqqında danışmaq istəyirəm.`);
   }));
-  const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("visible"); observer.unobserve(entry.target); } }), {threshold:.12});
-  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+  // Long sections must not wait for a percentage of their height to enter the screen.
+  const revealSections = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window && !window.matchMedia("(max-width: 800px), (prefers-reduced-motion: reduce)").matches) {
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    }), {threshold: 0, rootMargin: "0px 0px 160px 0px"});
+    revealSections.forEach(el => observer.observe(el));
+  } else {
+    revealSections.forEach(el => el.classList.add("visible"));
+  }
   fetch("data/products.json").then(r => { if (!r.ok) throw Error(); return r.json(); }).then(data => { products = data; render("all"); }).catch(() => { grid.innerHTML = "<p>Məhsullar yüklənmədi. Zəhmət olmasa səhifəni yeniləyin.</p>"; });
 })();
-
-
 
 
 
